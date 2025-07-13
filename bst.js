@@ -1,5 +1,5 @@
-let array = [3, 5, 2, 1, 1, 5, 12, 15, 5, 1, 2, 5, 0, 22];
-
+import { array } from "./main.js";
+// Class used for each individual node
 class Node {
   constructor(data) {
     this.data = data;
@@ -8,9 +8,34 @@ class Node {
   }
 }
 
-class Tree {
-  constructor(root) {
-    this.root = root;
+export class Tree {
+  constructor() {
+    this.root = null;
+    this.tree = new Array;
+    this.treeData = new Array;
+  }
+  insert(value) {
+    if (typeof value !== 'number') {
+      throw new TypeError('Type of addLeaf parameter must be number.');
+    }
+    this.treeData.push(value);
+    this.treeData = mergeSort(this.treeData);
+  }
+  remove(value) {
+    this.treeData = this.treeData.filter((el) => el !== value);
+  }
+  find(value) {
+    let current = this.root;
+    while (current !== null) {
+      if (current.data === value) {
+        return current;
+      }
+      if (current.data < value) 
+      current = current.right;
+      else 
+      current = current.left;
+    }
+    return null;
   }
 }
 
@@ -22,7 +47,7 @@ function mergeSort(array) {
   const right = array.slice(middle);
 
   // Recursively sort and merge
-  return merge(mergeSort(left), mergeSort(right));
+  return checkForDuplicates(merge(mergeSort(left), mergeSort(right)));
 }
 
 function merge(left, right) {
@@ -48,11 +73,42 @@ function checkForDuplicates(array) {
   let newArray = new Array;
   for (let i = 0; i < array.length; i++) {
     if (array[i] === array[i + 1]) continue;
+    else if (typeof array[i] !== 'number') continue;
     else newArray.push(array[i]);
   }
   return newArray;
 }
-array = mergeSort(array);
-console.log(checkForDuplicates(array));
 
+// Recursive function to construct binary tree. Source: www.geeks\for\geeks.org/sorted-array-to-balanced-bst/
+export function buildTree(arr, start, end) {
+    if (start > end) return null;
 
+    // Find the middle element
+    let mid = start + Math.floor((end - start) / 2);
+
+    // Create root node
+    let root = new Node(arr[mid]);
+
+    // Create left subtree
+    root.left = buildTree(arr, start, mid - 1);
+
+    // Create right subtree
+    root.right = buildTree(arr, mid + 1, end);
+
+    array.tree.push(root);
+    array.root = root;
+    return root;
+}
+
+export const prettyPrint = (node, prefix = '', isLeft = true) => {
+  if (node === null) {
+    return;
+  }
+  if (node.right !== null) {
+    prettyPrint(node.right, `${prefix}${isLeft ? '│   ' : '    '}`, false);
+  }
+  console.log(`${prefix}${isLeft ? '└── ' : '┌── '}${node.data}`);
+  if (node.left !== null) {
+    prettyPrint(node.left, `${prefix}${isLeft ? '    ' : '│   '}`, true);
+  }
+};
