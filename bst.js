@@ -37,6 +37,18 @@ export class Tree {
     }
     return null;
   }
+  // Iterates trough binary tree with breadth-first method and call's the callback function on each element
+  levelOrderForEach(callback, queue = [], i = 0) {
+    let current = this.root;
+
+    while (current !== null) {
+      queue.push(current.left, current.right);
+      current.data = 0;
+      current = queue[i];
+      i++;
+    }
+    buildTree(this.treeData, 0, this.treeData.length - 1)
+  }
   // Returns height of node containing given value
   height(value) {
     let current = this.find(value);

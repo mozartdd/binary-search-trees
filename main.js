@@ -6,7 +6,12 @@ for (let i = 0; i < 25; i++) {
   array.insert(i);
 }
 
-myBst.prettyPrint(myBst.buildTree(array.treeData, 0, array.treeData.length - 1));
 
-console.log(array.depth(0));
+
+let result = myBst.buildTree(array.treeData, 0, array.treeData.length - 1);
+
+array.levelOrderForEach();
+
+myBst.prettyPrint(result);
+
 
