@@ -14,6 +14,26 @@ export class Tree {
     this.tree = new Array;
     this.treeData = new Array;
   }
+    // Recursive function to construct binary tree. Source: www.geeks\for\geeks.org/sorted-array-to-balanced-bst/
+    buildTree(arr, start, end) {
+      if (start > end) return null;
+
+      // Find the middle element
+      let mid = start + Math.floor((end - start) / 2);
+
+      // Create root node
+      let root = new Node(arr[mid]);
+
+      // Create left subtree
+      root.left = this.buildTree(arr, start, mid - 1);
+
+      // Create right subtree
+      root.right = this.buildTree(arr, mid + 1, end);
+
+      this.tree.push(root);
+      this.root = root;
+      return root;
+  }
   insert(value) {
     if (typeof value !== 'number') {
       throw new TypeError('Type of addLeaf parameter must be number.');
@@ -38,17 +58,21 @@ export class Tree {
     return null;
   }
   // Iterates trough binary tree with breadth-first method and call's the callback function on each element
-  levelOrderForEach(callback, queue = [], i = 0) {
-    let current = this.root;
+  levelOrderForEach(callback) {
+  if (!callback) throw new Error('Callback function is required.');
+  if (!this.root) return;
 
-    while (current !== null) {
-      queue.push(current.left, current.right);
-      current.data = 0;
-      current = queue[i];
-      i++;
-    }
-    buildTree(this.treeData, 0, this.treeData.length - 1)
+  const queue = [this.root];
+
+  while (queue.length > 0) {
+    const current = queue.shift();
+    callback(current);
+
+    if (current.left) queue.push(current.left);
+    if (current.right) queue.push(current.right);
   }
+}
+
   // Returns height of node containing given value
   height(value) {
     let current = this.find(value);
@@ -91,27 +115,6 @@ export class Tree {
     }
     return depth;
   }
-}
-
-// Recursive function to construct binary tree. Source: www.geeks\for\geeks.org/sorted-array-to-balanced-bst/
-export function buildTree(arr, start, end) {
-    if (start > end) return null;
-
-    // Find the middle element
-    let mid = start + Math.floor((end - start) / 2);
-
-    // Create root node
-    let root = new Node(arr[mid]);
-
-    // Create left subtree
-    root.left = buildTree(arr, start, mid - 1);
-
-    // Create right subtree
-    root.right = buildTree(arr, mid + 1, end);
-
-    array.tree.push(root);
-    array.root = root;
-    return root;
 }
 
 function mergeSort(array) {
