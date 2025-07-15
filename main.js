@@ -8,10 +8,10 @@ for (let i = 0; i < 25; i++) {
 
 // Builds binary tree of nodes based on data of treeData
 array.buildTree(array.treeData, 0, array.treeData.length - 1);
-array.levelOrderForEach(multiplyByTwo);
+array.preOrderForEach(multiplyByTwo);
 
 function multiplyByTwo(data) {
-  data.data *= 2;
+  data.data += 0;
 }
 
 myBst.prettyPrint(array.root);

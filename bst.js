@@ -34,6 +34,7 @@ export class Tree {
       this.root = root;
       return root;
   }
+
   insert(value) {
     if (typeof value !== 'number') {
       throw new TypeError('Type of addLeaf parameter must be number.');
@@ -41,9 +42,11 @@ export class Tree {
     this.treeData.push(value);
     this.treeData = mergeSort(this.treeData);
   }
+
   remove(value) {
     this.treeData = this.treeData.filter((el) => el !== value);
   }
+
   find(value) {
     let current = this.root;
     while (current !== null) {
@@ -57,21 +60,34 @@ export class Tree {
     }
     return null;
   }
+
   // Iterates trough binary tree with breadth-first method and call's the callback function on each element
   levelOrderForEach(callback) {
-  if (!callback) throw new Error('Callback function is required.');
-  if (!this.root) return;
+    if (!callback) throw new Error('Callback function is required.');
+    if (!this.root) return;
 
-  const queue = [this.root];
+    const queue = [this.root];
 
-  while (queue.length > 0) {
-    const current = queue.shift();
-    callback(current);
+    while (queue.length > 0) {
+      const current = queue.shift();
+      callback(current);
 
-    if (current.left) queue.push(current.left);
-    if (current.right) queue.push(current.right);
+      if (current.left) queue.push(current.left);
+      if (current.right) queue.push(current.right);
+    }
   }
-}
+
+  // Root-left-right traversal method
+  preOrderForEach(callback, root = this.root) {
+    if (!callback) throw new Error('Callback function is required.');
+    if (!root) return;
+    if (root === null) return;
+    console.log(root.data);
+
+    callback(root);
+    this.preOrderForEach(callback, root.left);
+    this.preOrderForEach(callback, root.right);
+  }
 
   // Returns height of node containing given value
   height(value) {
@@ -95,6 +111,7 @@ export class Tree {
     }
     return leftHeight > rightHeight ? leftHeight : rightHeight;
   }
+
   // Return depth of node with given value
   depth(value) {
     let current = this.root;
